@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+
+    <flow name="get:Authentication-webpage">
+        <http:listener doc:name="get:/authentication" doc:id="ab50d247-973f-489c-9cf3-5745135a14c1" config-ref="HTTP_Listener_config" path="/authentication" allowedMethods="GET">
+			<http:error-response >
+				<http:body ><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<parse-template doc:name="login page" doc:id="634daaf0-e699-4553-9d39-3c7ef8f2fa13" location="webpage/index.html" />
+    </flow>
+	<flow name="post:Authentication-webpage" doc:id="4bc17b1e-13c3-4cdc-b068-79abdf8b75ce" >
+		<http:listener doc:name="post:/authentication" doc:id="15a6eaa0-5c82-4371-ac7e-d4daae496bfe" config-ref="HTTP_Listener_config" path="/authentication" allowedMethods="POST">
+			<http:response statusCode="#[vars.httpStatus default 200]" >
+				<http:headers ><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:response>
+			<http:error-response statusCode="#[vars.httpStatus default 500]">
+				<http:body ><![CDATA[#[payload]]]></http:body>
+				<http:headers ><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:error-response>
+		</http:listener>
+		<try doc:name="Try | authenticatio process" doc:id="e51ab8d8-2014-4a5e-867a-44bf8ae46245" >
+			<set-variable value="#[output application/java --- payload.username]" doc:name="var username" doc:id="18ca828e-a10e-4606-afc9-bec5fedb5023" variableName="username" />
+			<set-variable value="#[output application/java --- payload.password]" doc:name="var password" doc:id="bf6224e4-50c6-4029-a3af-4c7ba1b32c31" variableName="password" />
+			<set-payload value="#[output application/json --- {username: vars.username, password: vars.password}]" doc:name="Set Payload" doc:id="32e147b6-5447-4de3-bb97-e80879dcb227" mimeType="application/json" />
+			<flow-ref doc:name="authentication process" doc:id="5842b45d-4748-42bf-9985-e5b41d141775" name="Impl-Authentication"/>
+			<parse-template doc:name="success page" doc:id="2c54a8d1-0ece-4e4f-aaea-fecab1341967" location="webpage/loginSuccessful.html" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5fd29eaf-319a-4cb6-a7ec-a98963cdc8c5" type="ANY">
+					<logger level="ERROR" doc:name="Logger Error" doc:id="55dc0164-1212-402a-b93e-2dd7bfc279ca" message="ERROR:WEBAPPLICATION --- #[error]"/>
+					<parse-template doc:name="unsuccess page" doc:id="79747a01-858a-41bf-8f39-dfa0deb37b6b" location="webpage/loginFailure.html" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</flow>
+	
+</mule>

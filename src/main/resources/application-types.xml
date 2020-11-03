@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="login" format="json">
+      <types:shape format="json-schema" location="schemas/Login-Schema.json"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#6ee5a6f5-c3e3-49d9-95d1-7ebda98feab7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d22580a7-ad44-4580-a734-34f723cfa344">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4c086c40-bf14-4e71-b189-d8b11e4c7ca6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#0e11a0ad-0bb0-48ae-9f9c-1777edb15f38">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#efac578f-0da1-4cd0-8452-56b3cd2d7d99">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6d4a4a6b-03bb-4c7c-b98c-a46567a8a8fd">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#afe40250-b900-43a5-a4a8-9a7e9dc8e2de">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#91cb24e9-de7a-40a0-9ad7-dd24215d2b26">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4bc17b1e-13c3-4cdc-b068-79abdf8b75ce">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#116c4088-c8e9-43f7-b4d4-f3dd6749501d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1a9f5655-304b-463c-b2e7-341f0f0f76d7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1f9f194f-beed-4a46-9dce-9389617a5ddc">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="login"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

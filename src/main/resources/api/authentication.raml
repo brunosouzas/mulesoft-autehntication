@@ -1,0 +1,32 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/34d3a543-f982-4e41-914e-23f9418d3aee/ # 
+title: authentication
+version: v1
+
+types:
+  login: !include dataTypes/login-dataType.raml
+  customer: !include dataTypes/customer-dataType.raml
+
+traits:
+  secured: !include traits/security-trait.raml
+
+securitySchemes: 
+  basic: !include traits/authentication-securityScheme.raml
+
+/login:
+  post:
+    securedBy: [ basic ]
+    displayName: authentication a user
+    description: | 
+      authentication a user
+    body:
+      application/json:
+        type: login
+        example: !include examples/login-example.raml
+    responses:
+      200:
+        body:
+          application/json:
+            type: customer
+            example: !include examples/customer-example.raml
+        

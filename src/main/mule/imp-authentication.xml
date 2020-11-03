@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="Impl-Authentication" doc:id="0e11a0ad-0bb0-48ae-9f9c-1777edb15f38" >
+		<try doc:name="Try | validate fields" doc:id="c452b4e5-013e-44d0-a139-506ac1b02400" >
+			<json:validate-schema doc:name="login schema" doc:id="20828022-af61-4ab3-8ebc-a1a70eb90a5d" schema="schemas/Login-Schema.json">
+			<error-mapping targetType="LOGIN:INVALID_SCHEMA" />
+		</json:validate-schema>
+			<validation:is-not-blank-string doc:name="username" doc:id="6c31b8bb-f0df-4ccd-856a-b69a485551ed" config-ref="Validation_Config" value="#[payload.username]" message="username or password invalid">
+			<error-mapping targetType="LOGIN:USERNAME_IS_BLANK" />
+		</validation:is-not-blank-string>
+			<validation:is-not-blank-string doc:name="password" doc:id="d80816cd-98de-4e6c-8eab-ea3d4e51ec5f" config-ref="Validation_Config" value="#[payload.password]" message="username or password invalid">
+			<error-mapping targetType="LOGIN:PASSWORD_IS_BLANK" />
+		</validation:is-not-blank-string>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5c668350-fd19-49c0-8ac9-0a6b431e1ec5" type="ANY">
+					<set-variable value="400" doc:name="http Status" doc:id="ef3960b6-8560-4a96-be8e-23b2fdb268ef" variableName="httpStatus"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<choice doc:name="user authentication " doc:id="a0d91fe5-4b06-44a9-9eba-77c37471b3c9" >
+			<when expression="#[output application/java --- payload.username == p('loginDefault.username') and payload.password == p('loginDefault.password')]">
+				<set-payload value='#[output application/json --- {username:payload.username, name:"Bruno Souza"}]' doc:name="Payload success" doc:id="89b74d34-7361-44b8-b72b-03cc74db9c68" />
+			</when>
+			<otherwise >
+				<set-variable value="401" doc:name="http Status" doc:id="7d518e3e-ea84-41c9-8003-b8c34f97e745" variableName="httpStatus" />
+				<raise-error doc:name="Raise error" doc:id="aea3c2af-0824-4298-9019-ad5306f82a7a" type="LOGIN:UNAUTHENTICATED" description="Unauthorized, The username or password are not valid or the client does not have access"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+</mule>

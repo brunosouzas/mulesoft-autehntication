@@ -1,0 +1,6 @@
+http:
+  port: "8081"
+  
+loginDefault:
+  username: "mule"
+  password: "mule"
